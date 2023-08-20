@@ -5,7 +5,8 @@ import org.junit.jupiter.api.Test;
 
 public class TodosTest {
     SimpleTask simpleTask = new SimpleTask(5, "Позвонить родителям");
-    String[] subtasks = { "Молоко", "Яйца", "Хлеб" };
+    SimpleTask simpleTaskOne = new SimpleTask(6, "Позвонить друзьям");
+    String[] subtasks = {"Молоко", "Яйца", "Хлеб"};
     Epic epic = new Epic(55, subtasks);
     Todos todos = new Todos();
     Meeting meeting = new Meeting(
@@ -13,6 +14,12 @@ public class TodosTest {
             "Выкатка 3й версии приложения",
             "Приложение НетоБанка",
             "Во вторник после обеда"
+    );
+    Meeting newMeeting = new Meeting(
+            37,
+            "Релиз проекта",
+            "Позвонить кому-либо",
+            "В среду"
     );
 
     @Test
@@ -22,7 +29,8 @@ public class TodosTest {
         todos.add(epic);
         todos.add(meeting);
 
-        Task[] expected = { simpleTask, epic, meeting };
+
+        Task[] expected = {simpleTask, epic, meeting};
         Task[] actual = todos.findAll();
         Assertions.assertArrayEquals(expected, actual);
     }
@@ -33,9 +41,11 @@ public class TodosTest {
         todos.add(simpleTask);
         todos.add(epic);
         todos.add(meeting);
+        todos.add(simpleTaskOne);
+        todos.add(newMeeting);
 
-        Task[] expected = { simpleTask };
-        Task[] actual = todos.search("Позвонить");
+        Task[] expected = {simpleTask};
+        Task[] actual = todos.search("родителям");
 
         Assertions.assertArrayEquals(expected, actual);
     }
@@ -46,8 +56,10 @@ public class TodosTest {
         todos.add(simpleTask);
         todos.add(epic);
         todos.add(meeting);
+        todos.add(simpleTaskOne);
+        todos.add(newMeeting);
 
-        Task[] expected = { epic };
+        Task[] expected = {epic};
         Task[] actual = todos.search("Хлеб");
         Assertions.assertArrayEquals(expected, actual);
 
@@ -59,8 +71,10 @@ public class TodosTest {
         todos.add(simpleTask);
         todos.add(epic);
         todos.add(meeting);
+        todos.add(simpleTaskOne);
+        todos.add(newMeeting);
 
-        Task[] expected = { meeting };
+        Task[] expected = {meeting};
         Task[] actual = todos.search("Выкатка");
 
         Assertions.assertArrayEquals(expected, actual);
@@ -73,8 +87,10 @@ public class TodosTest {
         todos.add(simpleTask);
         todos.add(epic);
         todos.add(meeting);
+        todos.add(simpleTaskOne);
+        todos.add(newMeeting);
 
-        Task[] expected = { meeting };
+        Task[] expected = {meeting};
         Task[] actual = todos.search("Приложение");
 
         Assertions.assertArrayEquals(expected, actual);
@@ -87,8 +103,10 @@ public class TodosTest {
         todos.add(simpleTask);
         todos.add(epic);
         todos.add(meeting);
+        todos.add(simpleTaskOne);
+        todos.add(newMeeting);
 
-        Task[] expected = { meeting };
+        Task[] expected = {meeting};
         Task[] actual = todos.search("после обеда");
 
         Assertions.assertArrayEquals(expected, actual);
@@ -101,9 +119,40 @@ public class TodosTest {
         todos.add(simpleTask);
         todos.add(epic);
         todos.add(meeting);
+        todos.add(simpleTaskOne);
+        todos.add(newMeeting);
 
         Task[] expected = {};
         Task[] actual = todos.search("Пончик");
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldFindOneTask() {
+
+        todos.add(simpleTask);
+        todos.add(epic);
+        todos.add(meeting);
+        todos.add(simpleTaskOne);
+        todos.add(newMeeting);
+
+        Task[] expected = {meeting};
+        Task[] actual = todos.search("НетоБанк");
+        Assertions.assertArrayEquals(expected, actual);
+
+    }
+
+    @Test
+    public void shouldFindSeveralTasks() {
+
+        todos.add(simpleTask);
+        todos.add(epic);
+        todos.add(meeting);
+        todos.add(simpleTaskOne);
+        todos.add(newMeeting);
+
+        Task[] expected = {simpleTask, simpleTaskOne, newMeeting};
+        Task[] actual = todos.search("Позвонить");
         Assertions.assertArrayEquals(expected, actual);
     }
 }
